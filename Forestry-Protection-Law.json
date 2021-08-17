@@ -690,7 +690,7 @@
                         "type": "GameValueWrapper",
                         "value": {
                           "type": "Eco.Gameplay.Economy.GovernmentBankAccount",
-                          "name": "# <color=red>Federal Forestry Account</color>",
+                          "name": "# Federal Forestry Account",
                           "reference": true
                         }
                       },
@@ -885,7 +885,7 @@
                         "type": "GameValueWrapper",
                         "value": {
                           "type": "Eco.Gameplay.Economy.GovernmentBankAccount",
-                          "name": "# <color=red>Federal Forestry Account</color>",
+                          "name": "# Federal Forestry Account",
                           "reference": true
                         }
                       },
@@ -1173,7 +1173,7 @@
                         "type": "GameValueWrapper",
                         "value": {
                           "type": "Eco.Gameplay.Economy.GovernmentBankAccount",
-                          "name": "# <color=red>Federal Forestry Account</color>",
+                          "name": "# Federal Forestry Account",
                           "reference": true
                         }
                       },
@@ -1400,7 +1400,7 @@
                         "type": "GameValueWrapper",
                         "value": {
                           "type": "Eco.Gameplay.Economy.GovernmentBankAccount",
-                          "name": "# <color=red>Federal Forestry Account</color>",
+                          "name": "# Federal Forestry Account",
                           "reference": true
                         }
                       },
