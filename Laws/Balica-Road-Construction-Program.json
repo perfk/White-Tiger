@@ -1,0 +1,3065 @@
+{
+  "version": [
+    1,
+    0
+  ],
+  "type": "Eco.Gameplay.Civics.Laws.Law",
+  "name": "State Road Construction Program",
+  "reference": false,
+  "description": "The intent of the law is to provide payment and protection for the States roads\r\n\r\nThe law will pay for the following tasks\r\nTamping land (Road tool) on dirt and placing Dirt Ramps\r\nPlacing Stone Road or Stone Ramps\r\nPlacing Asphalt Roads\r\n\r\nWrite “!StateRoads” to see all payment values\r\n\r\nWarnings:\r\nThere are not any systems that can stop citizens from tamping a dirt block, picking up the dirt block, placing the dirt block and then tamping the same block. This is a criminal offence and can be identified. Don’t do it.\r\n\r\nGovernor and LT-Governor can use the following commands\r\n!StateRoadPriceDirtUp\r\n!StateRoadPriceDirtDown\r\n!StateRoadPriceStoneUp\r\n!StateRoadPriceStoneDown\r\n!StateRoadPriceAsphaltUp\r\n!StateRoadPriceAsphaltDown\r\nAll commands either lower or raise the payment by 0.1\r\nNote that all values start at 0, and must be set after law is voted in\r\n\r\nNote when importing law:\r\nMust have a bank account named: “# Balica Road Construction”\r\nMust have the following titles: “Governor of Balica” and “Lieutenant Governor of Balica”\r\nMust have district named “Balica County Roads”\r\n",
+  "properties": {
+    "Sections": [
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Road Construction - Tamping (dirt road)",
+          "UserDescription": "",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.TampRoad"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.TampRoad",
+                    "propNameBacker": "ToolUsed",
+                    "propDisplayName": "Tool Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Tamper",
+                        "internalDescription": "Any",
+                        "entries": []
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartPay_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "SourceBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceDirt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "PaymentCode": "State Road Construction",
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Road Construction - Dirt Ramp",
+          "UserDescription": "",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ConstructOrDeconstruct"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ConstructOrDeconstruct",
+                    "propNameBacker": "ItemUsed",
+                    "propDisplayName": "Item Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Constructable",
+                        "internalDescription": "<b><link=\"TypeTooltip:403\"><b><link=\"Item:DirtRampItem\"><style=\"Item\"><ecoicon item=\"DirtRampItem\">Dirt Ramp</ecoicon></style></link></b></link></b>",
+                        "entries": [
+                          {
+                            "type": "Type",
+                            "value": "DirtRampItem"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ConstructOrDeconstruct",
+                    "propNameBacker": "ToolUsed",
+                    "propDisplayName": "Tool Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Construction",
+                        "internalDescription": "Any",
+                        "entries": []
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Constructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartPay_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "SourceBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Arithmetic",
+                        "properties": {
+                          "LeftNumber": {
+                            "type": "GameValueWrapper",
+                            "value": 4.0
+                          },
+                          "Operation": "Multiply",
+                          "RightNumber": {
+                            "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                            "properties": {
+                              "CustomStatName": "StateRoadPriceDirt",
+                              "TimeRangeInHours": {
+                                "type": "GameValueWrapper",
+                                "value": 0.0
+                              },
+                              "TimeRangeType": "CountBackFromPresentTime",
+                              "User": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Players.User",
+                                  "name": "White-Tiger",
+                                  "reference": true
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "PaymentCode": "State Road Construction",
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Deconstructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Compare",
+                        "properties": {
+                          "Left": {
+                            "type": "Eco.Mods.SmartTax.OwedTaxes",
+                            "properties": {
+                              "Currency": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.Currency",
+                                  "name": "Euro",
+                                  "reference": true
+                                }
+                              },
+                              "Citizen": {
+                                "type": "GameValueContext",
+                                "contextName": "Citizen",
+                                "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                                "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                              },
+                              "TargetAccount": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                                  "name": "# Balica Road Construction",
+                                  "reference": true
+                                }
+                              },
+                              "ConsiderRebates": {
+                                "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                                "properties": {}
+                              }
+                            }
+                          },
+                          "Comparison": "GreaterThanOrEqualTo",
+                          "Right": {
+                            "type": "Eco.Gameplay.Civics.GameValues.Values.Wealth",
+                            "properties": {
+                              "Currency": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.Currency",
+                                  "name": "Euro",
+                                  "reference": true
+                                }
+                              },
+                              "Citizen": {
+                                "type": "GameValueContext",
+                                "contextName": "Citizen",
+                                "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                                "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.Prevent_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Deconstructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartTax_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "TargetBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Arithmetic",
+                        "properties": {
+                          "LeftNumber": {
+                            "type": "GameValueWrapper",
+                            "value": 4.0
+                          },
+                          "Operation": "Multiply",
+                          "RightNumber": {
+                            "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                            "properties": {
+                              "CustomStatName": "StateRoadPriceDirt",
+                              "TimeRangeInHours": {
+                                "type": "GameValueWrapper",
+                                "value": 0.0
+                              },
+                              "TimeRangeType": "CountBackFromPresentTime",
+                              "User": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Players.User",
+                                  "name": "White-Tiger",
+                                  "reference": true
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "TaxCode": "State Road Construction",
+                      "Suspended": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      },
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Road Construction - Stone",
+          "UserDescription": "",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ConstructOrDeconstruct"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ConstructOrDeconstruct",
+                    "propNameBacker": "ItemUsed",
+                    "propDisplayName": "Item Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Constructable",
+                        "internalDescription": "<b><link=\"TypeTooltip:2169\"><b><link=\"Item:StoneRoadItem\"><style=\"Item\"><ecoicon item=\"StoneRoadItem\">Stone Road</ecoicon></style></link></b></link></b>",
+                        "entries": [
+                          {
+                            "type": "Type",
+                            "value": "Eco.Mods.TechTree.StoneRoadItem"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ConstructOrDeconstruct",
+                    "propNameBacker": "ToolUsed",
+                    "propDisplayName": "Tool Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Construction",
+                        "internalDescription": "Any",
+                        "entries": []
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Constructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartPay_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "SourceBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceStone",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "PaymentCode": "State Road Construction",
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Deconstructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Compare",
+                        "properties": {
+                          "Left": {
+                            "type": "Eco.Mods.SmartTax.OwedTaxes",
+                            "properties": {
+                              "Currency": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.Currency",
+                                  "name": "Euro",
+                                  "reference": true
+                                }
+                              },
+                              "Citizen": {
+                                "type": "GameValueContext",
+                                "contextName": "Citizen",
+                                "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                                "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                              },
+                              "TargetAccount": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                                  "name": "# Balica Road Construction",
+                                  "reference": true
+                                }
+                              },
+                              "ConsiderRebates": {
+                                "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                                "properties": {}
+                              }
+                            }
+                          },
+                          "Comparison": "GreaterThanOrEqualTo",
+                          "Right": {
+                            "type": "Eco.Gameplay.Civics.GameValues.Values.Wealth",
+                            "properties": {
+                              "Currency": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.Currency",
+                                  "name": "Euro",
+                                  "reference": true
+                                }
+                              },
+                              "Citizen": {
+                                "type": "GameValueContext",
+                                "contextName": "Citizen",
+                                "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                                "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.Prevent_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Deconstructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartTax_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "TargetBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceStone",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "TaxCode": "State Road Construction",
+                      "Suspended": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      },
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Road Construction - Stone Ramp",
+          "UserDescription": "",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ConstructOrDeconstruct"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ConstructOrDeconstruct",
+                    "propNameBacker": "ItemUsed",
+                    "propDisplayName": "Item Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Constructable",
+                        "internalDescription": "<b><link=\"TypeTooltip:628\"><b><link=\"Item:StoneRampItem\"><style=\"Item\"><ecoicon item=\"StoneRampItem\">Stone Ramp</ecoicon></style></link></b></link></b>",
+                        "entries": [
+                          {
+                            "type": "Type",
+                            "value": "StoneRampItem"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ConstructOrDeconstruct",
+                    "propNameBacker": "ToolUsed",
+                    "propDisplayName": "Tool Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Construction",
+                        "internalDescription": "Any",
+                        "entries": []
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Constructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartPay_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "SourceBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Arithmetic",
+                        "properties": {
+                          "LeftNumber": {
+                            "type": "GameValueWrapper",
+                            "value": 4.0
+                          },
+                          "Operation": "Multiply",
+                          "RightNumber": {
+                            "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                            "properties": {
+                              "CustomStatName": "StateRoadPriceStone",
+                              "TimeRangeInHours": {
+                                "type": "GameValueWrapper",
+                                "value": 0.0
+                              },
+                              "TimeRangeType": "CountBackFromPresentTime",
+                              "User": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Players.User",
+                                  "name": "White-Tiger",
+                                  "reference": true
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "PaymentCode": "State Road Construction",
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Deconstructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Compare",
+                        "properties": {
+                          "Left": {
+                            "type": "Eco.Mods.SmartTax.OwedTaxes",
+                            "properties": {
+                              "Currency": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.Currency",
+                                  "name": "Euro",
+                                  "reference": true
+                                }
+                              },
+                              "Citizen": {
+                                "type": "GameValueContext",
+                                "contextName": "Citizen",
+                                "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                                "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                              },
+                              "TargetAccount": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                                  "name": "# Balica Road Construction",
+                                  "reference": true
+                                }
+                              },
+                              "ConsiderRebates": {
+                                "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                                "properties": {}
+                              }
+                            }
+                          },
+                          "Comparison": "GreaterThanOrEqualTo",
+                          "Right": {
+                            "type": "Eco.Gameplay.Civics.GameValues.Values.Wealth",
+                            "properties": {
+                              "Currency": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.Currency",
+                                  "name": "Euro",
+                                  "reference": true
+                                }
+                              },
+                              "Citizen": {
+                                "type": "GameValueContext",
+                                "contextName": "Citizen",
+                                "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                                "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.Prevent_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Deconstructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartTax_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "TargetBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Arithmetic",
+                        "properties": {
+                          "LeftNumber": {
+                            "type": "GameValueWrapper",
+                            "value": 4.0
+                          },
+                          "Operation": "Multiply",
+                          "RightNumber": {
+                            "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                            "properties": {
+                              "CustomStatName": "StateRoadPriceStone",
+                              "TimeRangeInHours": {
+                                "type": "GameValueWrapper",
+                                "value": 0.0
+                              },
+                              "TimeRangeType": "CountBackFromPresentTime",
+                              "User": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Players.User",
+                                  "name": "White-Tiger",
+                                  "reference": true
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "TaxCode": "State Road Construction",
+                      "Suspended": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      },
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Road Construction - Ashpalt",
+          "UserDescription": "",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ConstructOrDeconstruct"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ConstructOrDeconstruct",
+                    "propNameBacker": "ItemUsed",
+                    "propDisplayName": "Item Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Constructable",
+                        "internalDescription": "<b><link=\"TypeTooltip:2015\"><b><link=\"Item:AsphaltConcreteItem\"><style=\"Item\"><ecoicon item=\"AsphaltConcreteItem\">Asphalt Concrete</ecoicon></style></link></b></link></b>",
+                        "entries": [
+                          {
+                            "type": "Type",
+                            "value": "Eco.Mods.TechTree.AsphaltConcreteItem"
+                          }
+                        ]
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ConstructOrDeconstruct",
+                    "propNameBacker": "ToolUsed",
+                    "propDisplayName": "Tool Used",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Items.Item"
+                        },
+                        "requiredTag": "Construction",
+                        "internalDescription": "Any",
+                        "entries": []
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Constructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Constructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartPay_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "SourceBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceAsphalt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "PaymentCode": "State Road Construction",
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Deconstructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Compare",
+                        "properties": {
+                          "Left": {
+                            "type": "Eco.Mods.SmartTax.OwedTaxes",
+                            "properties": {
+                              "Currency": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.Currency",
+                                  "name": "Euro",
+                                  "reference": true
+                                }
+                              },
+                              "Citizen": {
+                                "type": "GameValueContext",
+                                "contextName": "Citizen",
+                                "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                                "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                              },
+                              "TargetAccount": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                                  "name": "# Balica Road Construction",
+                                  "reference": true
+                                }
+                              },
+                              "ConsiderRebates": {
+                                "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                                "properties": {}
+                              }
+                            }
+                          },
+                          "Comparison": "GreaterThanOrEqualTo",
+                          "Right": {
+                            "type": "Eco.Gameplay.Civics.GameValues.Values.Wealth",
+                            "properties": {
+                              "Currency": {
+                                "type": "GameValueWrapper",
+                                "value": {
+                                  "type": "Eco.Gameplay.Economy.Currency",
+                                  "name": "Euro",
+                                  "reference": true
+                                }
+                              },
+                              "Citizen": {
+                                "type": "GameValueContext",
+                                "contextName": "Citizen",
+                                "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                                "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.Prevent_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "Deconstructed",
+                        "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Deconstructed</ecoicon>: Was the block constructed or deconstructed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ConstructOrDeconstruct\">Action Location</ecoicon>: The position where the interaction took place.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Mods.SmartTax.SmartTax_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "TargetBankAccount": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                          "name": "# Balica Road Construction",
+                          "reference": true
+                        }
+                      },
+                      "Currency": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Economy.Currency",
+                          "name": "Euro",
+                          "reference": true
+                        }
+                      },
+                      "Amount": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceAsphalt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "Target": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "TaxCode": "State Road Construction",
+                      "Suspended": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      },
+                      "Silent": {
+                        "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                        "properties": {}
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Increase Tamping Payment",
+          "UserDescription": "Lets the Governor of Balica and Lieutenant Governor of Balica raise the payment when tamping (!StateRoadPriceDirtUp)",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ChatSent"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Tag",
+                    "propDisplayName": "Tag",
+                    "properties": {
+                      "String": null
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Message",
+                    "propDisplayName": "Message",
+                    "properties": {
+                      "String": "!StateRoadPriceDirtUp"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.TitleRequirements",
+                        "properties": {
+                          "Titles": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.Civics.Titles.Title"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<foldout><linktext><u>2 Titles</u></linktext><title>2 Titles</title><b><link=\"ref:AppointedTitle:1\"><ecoicon item=\"AppointedTitle\"><style=\"Government\">Governor of Balica</style></ecoicon></link></b>\r\n<b><link=\"ref:ElectedTitle:4\"><ecoicon item=\"ElectedTitle\"><style=\"Government\">Lieutenant Governor of Balica</style></ecoicon></link></b></foldout>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.ElectedTitle",
+                                "name": "Governor of Balica",
+                                "reference": true
+                              },
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.AppointedTitle",
+                                "name": "Lieutenant Governor of Balica",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Citizen": {
+                            "type": "GameValueContext",
+                            "contextName": "Citizen",
+                            "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                          },
+                          "Requirements": "HasAny"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.GameValues.RecordCustomStat",
+                    "reference": false,
+                    "properties": {
+                      "StatName": "StateRoadPriceDirt",
+                      "Person": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Players.User",
+                          "name": "White-Tiger",
+                          "reference": true
+                        }
+                      },
+                      "Count": {
+                        "type": "GameValueWrapper",
+                        "value": 0.1
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Road Price Dirt:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceDirt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Decrease Tamping Payment",
+          "UserDescription": "Lets the Governor of Balica and Lieutenant Governor of Balica decrease the payment when tamping (!StateRoadPriceDirtUp)",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ChatSent"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Tag",
+                    "propDisplayName": "Tag",
+                    "properties": {
+                      "String": null
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Message",
+                    "propDisplayName": "Message",
+                    "properties": {
+                      "String": "!StateRoadPriceDirtDown"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.TitleRequirements",
+                        "properties": {
+                          "Titles": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.Civics.Titles.Title"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<foldout><linktext><u>2 Titles</u></linktext><title>2 Titles</title><b><link=\"ref:AppointedTitle:1\"><ecoicon item=\"AppointedTitle\"><style=\"Government\">Governor of Balica</style></ecoicon></link></b>\r\n<b><link=\"ref:ElectedTitle:4\"><ecoicon item=\"ElectedTitle\"><style=\"Government\">Lieutenant Governor of Balica</style></ecoicon></link></b></foldout>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.ElectedTitle",
+                                "name": "Governor of Balica",
+                                "reference": true
+                              },
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.AppointedTitle",
+                                "name": "Lieutenant Governor of Balica",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Citizen": {
+                            "type": "GameValueContext",
+                            "contextName": "Citizen",
+                            "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                          },
+                          "Requirements": "HasAny"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.GameValues.RecordCustomStat",
+                    "reference": false,
+                    "properties": {
+                      "StatName": "StateRoadPriceDirt",
+                      "Person": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Players.User",
+                          "name": "White-Tiger",
+                          "reference": true
+                        }
+                      },
+                      "Count": {
+                        "type": "GameValueWrapper",
+                        "value": -0.1
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Road Price Dirt:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceDirt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Increase Stone Payment",
+          "UserDescription": "Lets the Governor of Balica and Lieutenant Governor of Balica raise the payment when placing stone (!StateRoadPriceDirtUp)",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ChatSent"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Tag",
+                    "propDisplayName": "Tag",
+                    "properties": {
+                      "String": null
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Message",
+                    "propDisplayName": "Message",
+                    "properties": {
+                      "String": "!StateRoadPriceStoneUp"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.TitleRequirements",
+                        "properties": {
+                          "Titles": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.Civics.Titles.Title"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<foldout><linktext><u>2 Titles</u></linktext><title>2 Titles</title><b><link=\"ref:AppointedTitle:1\"><ecoicon item=\"AppointedTitle\"><style=\"Government\">Governor of Balica</style></ecoicon></link></b>\r\n<b><link=\"ref:ElectedTitle:4\"><ecoicon item=\"ElectedTitle\"><style=\"Government\">Lieutenant Governor of Balica</style></ecoicon></link></b></foldout>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.ElectedTitle",
+                                "name": "Governor of Balica",
+                                "reference": true
+                              },
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.AppointedTitle",
+                                "name": "Lieutenant Governor of Balica",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Citizen": {
+                            "type": "GameValueContext",
+                            "contextName": "Citizen",
+                            "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                          },
+                          "Requirements": "HasAny"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.GameValues.RecordCustomStat",
+                    "reference": false,
+                    "properties": {
+                      "StatName": "StateRoadPriceStone",
+                      "Person": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Players.User",
+                          "name": "White-Tiger",
+                          "reference": true
+                        }
+                      },
+                      "Count": {
+                        "type": "GameValueWrapper",
+                        "value": 0.1
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Road Price Stone:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceStone",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Decrease Stone Payment",
+          "UserDescription": "Lets the Governor of Balica and Lieutenant Governor of Balica decrease the payment when placing stone (!StateRoadPriceDirtUp)",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ChatSent"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Tag",
+                    "propDisplayName": "Tag",
+                    "properties": {
+                      "String": null
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Message",
+                    "propDisplayName": "Message",
+                    "properties": {
+                      "String": "!StateRoadPriceStoneDown"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.TitleRequirements",
+                        "properties": {
+                          "Titles": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.Civics.Titles.Title"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<foldout><linktext><u>2 Titles</u></linktext><title>2 Titles</title><b><link=\"ref:AppointedTitle:1\"><ecoicon item=\"AppointedTitle\"><style=\"Government\">Governor of Balica</style></ecoicon></link></b>\r\n<b><link=\"ref:ElectedTitle:4\"><ecoicon item=\"ElectedTitle\"><style=\"Government\">Lieutenant Governor of Balica</style></ecoicon></link></b></foldout>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.ElectedTitle",
+                                "name": "Governor of Balica",
+                                "reference": true
+                              },
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.AppointedTitle",
+                                "name": "Lieutenant Governor of Balica",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Citizen": {
+                            "type": "GameValueContext",
+                            "contextName": "Citizen",
+                            "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                          },
+                          "Requirements": "HasAny"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.GameValues.RecordCustomStat",
+                    "reference": false,
+                    "properties": {
+                      "StatName": "StateRoadPriceStone",
+                      "Person": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Players.User",
+                          "name": "White-Tiger",
+                          "reference": true
+                        }
+                      },
+                      "Count": {
+                        "type": "GameValueWrapper",
+                        "value": -0.1
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Road Price Stone:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceStone",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Increase Asphalt Payment",
+          "UserDescription": "Lets the Governor of Balica and Lieutenant Governor of Balica raise the payment when placing asphalt(!StateRoadPriceDirtUp)",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ChatSent"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Tag",
+                    "propDisplayName": "Tag",
+                    "properties": {
+                      "String": null
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Message",
+                    "propDisplayName": "Message",
+                    "properties": {
+                      "String": "!StateRoadPriceAsphaltUp"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.TitleRequirements",
+                        "properties": {
+                          "Titles": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.Civics.Titles.Title"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<foldout><linktext><u>2 Titles</u></linktext><title>2 Titles</title><b><link=\"ref:AppointedTitle:1\"><ecoicon item=\"AppointedTitle\"><style=\"Government\">Governor of Balica</style></ecoicon></link></b>\r\n<b><link=\"ref:ElectedTitle:4\"><ecoicon item=\"ElectedTitle\"><style=\"Government\">Lieutenant Governor of Balica</style></ecoicon></link></b></foldout>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.ElectedTitle",
+                                "name": "Governor of Balica",
+                                "reference": true
+                              },
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.AppointedTitle",
+                                "name": "Lieutenant Governor of Balica",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Citizen": {
+                            "type": "GameValueContext",
+                            "contextName": "Citizen",
+                            "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                          },
+                          "Requirements": "HasAny"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.GameValues.RecordCustomStat",
+                    "reference": false,
+                    "properties": {
+                      "StatName": "StateRoadPriceAsphalt",
+                      "Person": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Players.User",
+                          "name": "White-Tiger",
+                          "reference": true
+                        }
+                      },
+                      "Count": {
+                        "type": "GameValueWrapper",
+                        "value": 0.1
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Road Price Asphalt:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceAsphalt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Decrease Asphalt Payment",
+          "UserDescription": "Lets the Governor of Balica and Lieutenant Governor of Balica decrease the payment when placing asphalt(!StateRoadPriceDirtUp)",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ChatSent"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Tag",
+                    "propDisplayName": "Tag",
+                    "properties": {
+                      "String": null
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Message",
+                    "propDisplayName": "Message",
+                    "properties": {
+                      "String": "!StateRoadPriceAsphaltDown"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.TitleRequirements",
+                        "properties": {
+                          "Titles": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.Civics.Titles.Title"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<foldout><linktext><u>2 Titles</u></linktext><title>2 Titles</title><b><link=\"ref:AppointedTitle:1\"><ecoicon item=\"AppointedTitle\"><style=\"Government\">Governor of Balica</style></ecoicon></link></b>\r\n<b><link=\"ref:ElectedTitle:4\"><ecoicon item=\"ElectedTitle\"><style=\"Government\">Lieutenant Governor of Balica</style></ecoicon></link></b></foldout>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.ElectedTitle",
+                                "name": "Governor of Balica",
+                                "reference": true
+                              },
+                              {
+                                "type": "Eco.Gameplay.Civics.Titles.AppointedTitle",
+                                "name": "Lieutenant Governor of Balica",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Citizen": {
+                            "type": "GameValueContext",
+                            "contextName": "Citizen",
+                            "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                          },
+                          "Requirements": "HasAny"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.GameValues.RecordCustomStat",
+                    "reference": false,
+                    "properties": {
+                      "StatName": "StateRoadPriceAsphalt",
+                      "Person": {
+                        "type": "GameValueWrapper",
+                        "value": {
+                          "type": "Eco.Gameplay.Players.User",
+                          "name": "White-Tiger",
+                          "reference": true
+                        }
+                      },
+                      "Count": {
+                        "type": "GameValueWrapper",
+                        "value": -0.1
+                      },
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Road Price Asphalt:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceAsphalt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "State Roads Payment overview",
+          "UserDescription": "Citizens can use the command !StateRoads to get payment information",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ChatSent"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Tag",
+                    "propDisplayName": "Tag",
+                    "properties": {
+                      "String": null
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectString",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ChatSent",
+                    "propNameBacker": "Message",
+                    "propDisplayName": "Message",
+                    "properties": {
+                      "String": "!StateRoads"
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "Tamping payout:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceDirt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Stone Road payout:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceStone",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Asphalt payout:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Gameplay.Civics.GameValues.CustomStatQuery",
+                        "properties": {
+                          "CustomStatName": "StateRoadPriceAsphalt",
+                          "TimeRangeInHours": {
+                            "type": "GameValueWrapper",
+                            "value": 0.0
+                          },
+                          "TimeRangeType": "CountBackFromPresentTime",
+                          "User": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Players.User",
+                              "name": "White-Tiger",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Owed Road Payments:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Mods.SmartTax.OwedPayments",
+                        "properties": {
+                          "Currency": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Economy.Currency",
+                              "name": "Euro",
+                              "reference": true
+                            }
+                          },
+                          "Citizen": {
+                            "type": "GameValueContext",
+                            "contextName": "Citizen",
+                            "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                          },
+                          "SourceAccount": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                              "name": "# Balica Road Construction",
+                              "reference": true
+                            }
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  },
+                  {
+                    "type": "Eco.Gameplay.Civics.SendNotice",
+                    "reference": false,
+                    "properties": {
+                      "Message": "State Owed Road Taxes:",
+                      "NotificationType": "SideBarMessage",
+                      "PeopleToSendTo": {
+                        "type": "GameValueContext",
+                        "contextName": "Citizen",
+                        "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                      },
+                      "ValueToDisplay": {
+                        "type": "Eco.Mods.SmartTax.OwedTaxes",
+                        "properties": {
+                          "Currency": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Economy.Currency",
+                              "name": "Euro",
+                              "reference": true
+                            }
+                          },
+                          "Citizen": {
+                            "type": "GameValueContext",
+                            "contextName": "Citizen",
+                            "titleBacking": "<ecoicon item=\"User\">Citizen</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"User\">Citizen</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"User\">Citizen</ecoicon>: The citizen who performed the interaction.\r\n"
+                          },
+                          "TargetAccount": {
+                            "type": "GameValueWrapper",
+                            "value": {
+                              "type": "Eco.Gameplay.Economy.TreasuryBankAccount",
+                              "name": "# Balica Road Construction",
+                              "reference": true
+                            }
+                          },
+                          "ConsiderRebates": {
+                            "type": "Eco.Gameplay.Civics.GameValues.Yes",
+                            "properties": {}
+                          }
+                        }
+                      },
+                      "LocationToDisplay": null,
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "type": "Eco.Gameplay.Civics.Laws.LawSection",
+        "reference": false,
+        "properties": {
+          "Title": "Land Claim protection on State Roads",
+          "UserDescription": "",
+          "Triggers": [
+            {
+              "type": "Eco.Gameplay.Civics.Laws.TriggerSettings",
+              "reference": false,
+              "properties": {
+                "Trigger": {
+                  "type": "Type",
+                  "value": "Eco.Gameplay.GameActions.ClaimOrUnclaimProperty"
+                },
+                "Configs": [
+                  {
+                    "type": "Eco.Gameplay.GameActions.SelectTriggerConfig",
+                    "typeToConfig": "Eco.Gameplay.GameActions.ClaimOrUnclaimProperty",
+                    "propNameBacker": "PreviousDeedOwner",
+                    "propDisplayName": "Previous Deed Owner",
+                    "properties": {
+                      "List": {
+                        "type": "GamePickerList",
+                        "mustDeriveType": {
+                          "type": "Type",
+                          "value": "Eco.Gameplay.Aliases.IAlias"
+                        },
+                        "requiredTag": null,
+                        "internalDescription": "Any",
+                        "entries": []
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ],
+          "IfThenBlocks": [
+            {
+              "type": "Eco.Gameplay.Civics.IfThenBlock",
+              "reference": false,
+              "properties": {
+                "If": {
+                  "type": "Eco.Gameplay.Civics.GameValues.SetOfConditions",
+                  "properties": {
+                    "List": [
+                      {
+                        "type": "GameValueContext",
+                        "contextName": "ClaimingLand",
+                        "titleBacking": "<ecoicon item=\"ClaimOrUnclaimProperty\">Claiming Land</ecoicon>",
+                        "tooltip": "When triggered, the <ecoicon item=\"ClaimOrUnclaimProperty\">Claiming Land</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ClaimOrUnclaimProperty\">Claiming Land</ecoicon>: Was the property claimed or unclaimed?\r\n"
+                      },
+                      {
+                        "type": "Eco.Gameplay.Civics.GameValues.Values.DistrictRequirements",
+                        "properties": {
+                          "Location": {
+                            "type": "GameValueContext",
+                            "contextName": "Action Location",
+                            "titleBacking": "<ecoicon item=\"ClaimOrUnclaimProperty\">Action Location</ecoicon>",
+                            "tooltip": "When triggered, the <ecoicon item=\"ClaimOrUnclaimProperty\">Action Location</ecoicon> value of the event will be used.\r\n\r\n<ecoicon item=\"ClaimOrUnclaimProperty\">Action Location</ecoicon>: The position of the claim.\r\n"
+                          },
+                          "Districts": {
+                            "type": "GamePickerList",
+                            "mustDeriveType": {
+                              "type": "Type",
+                              "value": "Eco.Gameplay.LegislationSystem.District"
+                            },
+                            "requiredTag": null,
+                            "internalDescription": "<b><link=\"ref:District:28\"><ecoicon item=\"District\"><color=#000D12FF>Balica County Roads 2</color></ecoicon></link></b>",
+                            "entries": [
+                              {
+                                "type": "Eco.Gameplay.LegislationSystem.District",
+                                "name": "Balica County Roads 2",
+                                "reference": true
+                              }
+                            ]
+                          },
+                          "Requirements": "InsideOne"
+                        }
+                      }
+                    ],
+                    "Comparison": "All"
+                  }
+                },
+                "Then": [
+                  {
+                    "type": "Eco.Gameplay.Civics.Prevent_LegalAction",
+                    "reference": false,
+                    "properties": {
+                      "InfoboxOnSuccess": {
+                        "type": "Eco.Gameplay.Civics.GameValues.No",
+                        "properties": {}
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
